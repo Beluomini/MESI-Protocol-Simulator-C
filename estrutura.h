@@ -7,8 +7,6 @@
 #define QTD_LINHA_PRINCIPAL 1000
 // Quantidade de posicoes que a CACHE vai ter
 #define QTD_LINHA_CACHE 16
-// Quantidade de acessos que vao ocorrer na PRINCIPAL
-#define TAM_ENTRADA_ACESSOS 24
 // Variacao maxima dos valores da PRINCIPAL
 #define RANGE_PRINCIPAL_VALORES 1000
 

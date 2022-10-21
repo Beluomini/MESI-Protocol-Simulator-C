@@ -62,7 +62,7 @@ int usaProcessador(TipoLista *memCache, int p, int *memPrincipal, TipoLista *mem
                 printf("\n>Encontrou na cache auxiliar 1\n");
                 if(a.Linha.mesi == 'm'){
                     printf("\n>Ha alteracao, invalidando cache auxiliar 1\n");
-                    buscaAux1->Linha.mesi = 'i';
+                    buscaAux1->Linha.mesi = 's';
                 }else{
                     buscaAux1->Linha.mesi = 's';
                     a.Linha.mesi = 's';
@@ -73,7 +73,7 @@ int usaProcessador(TipoLista *memCache, int p, int *memPrincipal, TipoLista *mem
                 printf("\n>Encontrou na cache auxiliar 2\n");
                 if(a.Linha.mesi == 'm'){
                     printf("\n>Ha alteracao, invalidando cache auxiliar 2\n");
-                    buscaAux2->Linha.mesi = 'i';
+                    buscaAux2->Linha.mesi = 's';
                 }else{
                     buscaAux2->Linha.mesi = 's';
                     a.Linha.mesi = 's';
@@ -82,78 +82,40 @@ int usaProcessador(TipoLista *memCache, int p, int *memPrincipal, TipoLista *mem
 
             printf("\n> Inserindo na cache\n");
             Insere(a.Linha, memCache);
-
-            if(p == 1){
-                printf("\n---> Cache do processador %d\n", p);
-                Imprime(*memCache);
-                printf("\n---> Cache do processador %d\n", 2);
-                Imprime(*memCacheAux1);
-                printf("\n---> Cache do processador %d\n", 3);
-                Imprime(*memCacheAux2);
-            }else if(p == 2){
-                printf("\n---> Cache do processador %d\n", 1);
-                Imprime(*memCacheAux1);
-                printf("\n---> Cache do processador %d\n", p);
-                Imprime(*memCache);
-                printf("\n---> Cache do processador %d\n", 3);
-                Imprime(*memCacheAux2);
-            }else{
-                printf("\n---> Cache do processador %d\n", 1);
-                Imprime(*memCacheAux1);
-                printf("\n---> Cache do processador %d\n", 2);
-                Imprime(*memCacheAux2);
-                printf("\n---> Cache do processador %d\n", p);
-                Imprime(*memCache);
-            }
+            ImprimeCaches(p, memCache, memCacheAux1, memCacheAux2);
 
         }else{ // Se a cache estiver cheia, usa o metodo FIFO
             // reorganizaFifo(memCache);
             printf("\n> Cache cheia, usando o metodo FIFO\n");
+            ImprimeCelula(*memCache->Primeiro->Prox);
+            if(memCache->Primeiro->Prox->Linha.mesi == 'm'){
+                printf("\n> Celula com alteração (write back) procurando em outras caches...\n");
+                Celula* buscaAux1 = buscaNaCache(*memCache->Primeiro->Prox, memCacheAux1);
+                if(buscaAux1 != NULL){
+                    printf("\n>Invalidando linha da cache encontrada no Processador 1\n");
+                    buscaAux1->Linha.mesi = 'i';
+                }
+                Celula* buscaAux2 = buscaNaCache(*memCache->Primeiro->Prox, memCacheAux2);
+                if(buscaAux2 != NULL){
+                    printf("\n>Invalidando linha da cache encontrada no Processador 2\n");
+                    buscaAux2->Linha.mesi = 'i';
+                }
+            }
             removePrimeiroLista(a, memCache, memPrincipal);
+            ImprimeCaches(p, memCache, memCacheAux1, memCacheAux2);
         }
     }else{ // Se encontrou
         printf("\n-> Achou na posicao na cache");
         if(a.Linha.mesi == 'm'){
             printf(" (WRITE HIT)\n");
             encontrou->Linha.mesi = 'm';
-            printf("\n>procurando em outra cache...\n");
-            Celula* buscaAux1 = buscaNaCache(a, memCacheAux1);
-            if(buscaAux1 != NULL){
-                printf("\n>Invalidando linha da cache encontrada no Processador 1\n");
-                buscaAux1->Linha.mesi = 'i';
-            }
-            Celula* buscaAux2 = buscaNaCache(a, memCacheAux2);
-            if(buscaAux2 != NULL){
-                printf("\n>Invalidando linha da cache encontrada no Processador 2\n");
-                buscaAux2->Linha.mesi = 'i';
-            }
         }else{
             printf(" (READ HIT)\n");
         }
         // Em caso de HIT atualiza a memoria cache colocando a celula na ultma posicao e a cache eh impressa
         // reorganizaHit(encontrou, memCache);
-        if(p == 1){
-            printf("\n---> Cache do processador %d\n", p);
-            Imprime(*memCache);
-            printf("\n---> Cache do processador %d\n", 2);
-            Imprime(*memCacheAux1);
-            printf("\n---> Cache do processador %d\n", 3);
-            Imprime(*memCacheAux2);
-        }else if(p == 2){
-            printf("\n---> Cache do processador %d\n", 1);
-            Imprime(*memCacheAux1);
-            printf("\n---> Cache do processador %d\n", p);
-            Imprime(*memCache);
-            printf("\n---> Cache do processador %d\n", 3);
-            Imprime(*memCacheAux2);
-        }else{
-            printf("\n---> Cache do processador %d\n", 1);
-            Imprime(*memCacheAux1);
-            printf("\n---> Cache do processador %d\n", 2);
-            Imprime(*memCacheAux2);
-            printf("\n---> Cache do processador %d\n", p);
-            Imprime(*memCache);
-        }
+        ImprimeCaches(p, memCache, memCacheAux1, memCacheAux2);
+
         
     }
     

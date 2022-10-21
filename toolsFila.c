@@ -88,5 +88,32 @@ void ImprimeCelula(Celula cel){
     printf ("\nvalor2: %d", cel.Linha.valor2);
     printf ("\nverificador de alteracao: %d", cel.Linha.alteracao);
     printf ("\nFIFO: %d", cel.Linha.fifo);
+    printf ("\nMESI: %c", cel.Linha.mesi);
     printf ("\n-----------------------------------------------------\n");
+}
+
+// Imprime caches
+void ImprimeCaches(int p, TipoLista *memCache, TipoLista *memCacheAux1, TipoLista *memCacheAux2){
+    if(p == 1){
+        printf("\n---> Cache do processador %d\n", p);
+        Imprime(*memCache);
+        printf("\n---> Cache do processador %d\n", 2);
+        Imprime(*memCacheAux1);
+        printf("\n---> Cache do processador %d\n", 3);
+        Imprime(*memCacheAux2);
+    }else if(p == 2){
+        printf("\n---> Cache do processador %d\n", 1);
+        Imprime(*memCacheAux1);
+        printf("\n---> Cache do processador %d\n", p);
+        Imprime(*memCache);
+        printf("\n---> Cache do processador %d\n", 3);
+        Imprime(*memCacheAux2);
+    }else{
+        printf("\n---> Cache do processador %d\n", 1);
+        Imprime(*memCacheAux1);
+        printf("\n---> Cache do processador %d\n", 2);
+        Imprime(*memCacheAux2);
+        printf("\n---> Cache do processador %d\n", p);
+        Imprime(*memCache);
+    }
 }

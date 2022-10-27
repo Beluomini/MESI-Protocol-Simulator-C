@@ -6,7 +6,7 @@
 // Quantidade de posicoes que a PRINCIPAL vai ter
 #define QTD_LINHA_PRINCIPAL 1000
 // Quantidade de posicoes que a CACHE vai ter
-#define QTD_LINHA_CACHE 8
+#define QTD_LINHA_CACHE 4
 // Variacao maxima dos valores da PRINCIPAL
 #define RANGE_PRINCIPAL_VALORES 1000
 
